@@ -61,9 +61,9 @@ p(z) = z^4 + z + 1
 
 ## Multiplication on GF(2^4) (C = mul4(A,B))
 
-Input: A = (a3||a2||a1||a0), B = (b3||b2||b1||b0), ai,bi 1 bit
+Input: A = (a3,a2,a1,a0), B = (b3,b2,b1,b0), ai,bi 1 bit
 
-Output: C = (c3||c2||c1||c0)
+Output: C = (c3,c2,c1,c0)
 
 t1 = a0 XOR a3
 
@@ -78,9 +78,9 @@ c1 = (a1 AND b0) XOR (t1 AND b1) XOR (t2 AND b2) XOR ((a1 XOR a2) AND b3)
 c0 = (a0 AND b0) XOR (a3 AND b1) XOR (a2 AND b2) XOR (a1 AND b3)
 
 ## Squaring on GF(2^4) (C = sqr4(A))
-Input: A = (a3||a2||a1||a0),  ai 1 bit
+Input: A = (a3,a2,a1,a0),  ai 1 bit
 
-Output: C = (c3||c2||c1||c0)
+Output: C = (c3,c2,c1,c0)
 
 c3 = a3
 
@@ -91,9 +91,9 @@ c1 = a2
 c0 = a0 XOR a2
 
 ## Inversion on GF(2^4) (C = inv4(A))
-Input: A = (a3||a2||a1||a0),  ai 1 bit
+Input: A = (a3,a2,a1,a0),  ai 1 bit
 
-Output: C = (c3||c2||c1||c0)
+Output: C = (c3,c2,c1,c0)
 
 t1 = a1 XOR a2 XOR a3 XOR (a1 AND a2 AND a3)
 
@@ -114,9 +114,9 @@ p(y) = y^2 + p1 * y + p0
 
 ## Multiplication on GF(2^8) (mul8)
 
-Input: A = (a1||a0), B = (b1||b0), ai,bi 4 bit
+Input: A = (a1,a0), B = (b1,b0), ai,bi 4 bit
 
-Output: C = (c1||c0)
+Output: C = (c1,c0)
 
 t = mul4(a1, b1)
 
@@ -126,9 +126,9 @@ c0 = mul4(a0,b0) XOR mul4(t,p0)
 
 ## Squaring on GF(2^8) (sqr8)
 
-Input: A = (a1||a0), ai 4 bit
+Input: A = (a1,a0), ai 4 bit
 
-Output: C = (c1||c0)
+Output: C = (c1,c0)
 
 t = sqr4(a1)
 
@@ -138,9 +138,9 @@ c0 = sqr4(a0) XOR mul4(t,p0)
 
 ## Inversion on GF(2^8) (inv8)
 
-Input: A = (a1||a0), ai 4 bit
+Input: A = (a1,a0), ai 4 bit
 
-Output: C = (c1||c0)
+Output: C = (c1,c0)
 
 t1 = mul4(sqr4(a1), p0) XOR mul4(mul4(a1,a0), p1) XOR sqr4(a0)
 

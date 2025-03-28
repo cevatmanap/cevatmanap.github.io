@@ -8,7 +8,7 @@ For a general analysis of various Block Cipher Modes checkout the excellent repo
 # ECB Mode
 
 <div style="text-align: center">
-{% include_relative tikz/ecb.tikz.md %}
+{% include_relative ecb.tikz.md %}
 </div>
 
 
@@ -22,7 +22,7 @@ Not used at all!!
 Defined In: [NIST SP-800-38A](http://csrc.nist.gov)
 <div style="text-align: center">
 
-{% include_relative tikz/cbc.tikz.md %}
+{% include_relative cbc.tikz.md %}
 </div>
 
 # CFB Mode
@@ -30,8 +30,5 @@ Defined In: [NIST SP-800-38A](http://csrc.nist.gov)
 Defined In: [NIST SP-800-38A](http://csrc.nist.gov)
 <div style="text-align: center">
 
-{% include_relative tikz/cfb.tikz.md %}
+{% include_relative cfb.tikz.md %}
 </div>
-
-
-
