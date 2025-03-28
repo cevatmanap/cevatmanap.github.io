@@ -1,2 +1,396 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-04-03T00:55:34+03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Cevat Manap</title><subtitle>Description
-</subtitle><author><name>Cevat Manap</name><email>cevatmanap@gmail.com</email></author></feed>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-28T20:48:48+03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Cevat Manap</title><subtitle>Description
+</subtitle><author><name>Cevat Manap</name><email>cevatmanap@gmail.com</email></author><entry><title type="html">Inversion</title><link href="http://localhost:4000/2025/03/28/inversion.html" rel="alternate" type="text/html" title="Inversion" /><published>2025-03-28T00:00:00+03:00</published><updated>2025-03-28T00:00:00+03:00</updated><id>http://localhost:4000/2025/03/28/inversion</id><content type="html" xml:base="http://localhost:4000/2025/03/28/inversion.html"><![CDATA[<h1 id="gf2m-inversion">GF(2^m) Inversion</h1>
+
+<h2 id="general-idea-for-implementing-gfq2-operations-on-gfq">General Idea for Implementing GF(q^2) Operations on GF(q)</h2>
+<p>Polinomial defining GF(q^2) over GF(q):</p>
+
+<p>p(x) = x^2 + p1*x + p0</p>
+
+<p>p1,p0 in GF(q)</p>
+
+<h2 id="inversion-on-gfq2">Inversion on GF(q^2)</h2>
+<p>A, B in GF(q^2), A = a1 * x + a0, B = b1 * x + b0,</p>
+
+<p>a1,a0,b1,b0 in GF(q),</p>
+
+<p>B satisfies B = A^-1</p>
+
+<p>Calculate b1, b0 as:</p>
+
+<p>t = (a1^2 * p0 + a1 * a0 * p1 + a0^2)^-1</p>
+
+<p>b1 = t * a1</p>
+
+<p>b0 = t * (a1 * p1 + a0)</p>
+
+<p>all operations for calculating t,b1,b0 are on GF(q)</p>
+
+<h2 id="multiplication-on-gfq2">Multiplication on GF(q^2)</h2>
+<p>A, B, C in GF(q^2), A = a1 * x + a0, B = b1 * x + b0, C = c1 * x + c0,</p>
+
+<p>a1,a0,b1,b0,c1,c0 in GF(q),</p>
+
+<p>C satisfies C = A * B</p>
+
+<p>Calculate c1, c0 as:</p>
+
+<p>c1 = a1 * b0 + a0 * b1 + a1 * b1 * p1</p>
+
+<p>c0 = a0 * b0 + a1 * b1 * p0</p>
+
+<h2 id="multiplication-on-gfq2-1">Multiplication on GF(q^2)</h2>
+<p>A, B in GF(q^2), A = a1 * x + a0, B = b1 * x + b0,</p>
+
+<p>a1,a0,b1,b0 in GF(q),</p>
+
+<p>B satisfies B = A * A</p>
+
+<p>Calculate b1, b0 as:</p>
+
+<p>b1 = a1^2 * p1</p>
+
+<p>b0 = a0^2 + a1^2 * p0</p>
+
+<h1 id="operations-on-gf24">Operations on GF(2^4)</h1>
+<p>Constructing GF(2^4) on GF(2) using bit operations. Following operations are defined in</p>
+
+<p><a href="https://link.springer.com/chapter/10.1007/3-540-45760-7_6">Wolkerstorfer J, Oswald E, Lamberger M, “An ASIC Implementation of the AES SBoxes”, CT-RSA 2002, LNCS 2271, pp. 67-78, Springer-Verlag, 2002</a></p>
+
+<p>Polinomial defining GF(2^4) over GF(2):</p>
+
+<p>p(z) = z^4 + z + 1</p>
+
+<h2 id="multiplication-on-gf24-c--mul4ab">Multiplication on GF(2^4) (C = mul4(A,B))</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Input: A = (a3</td>
+      <td> </td>
+      <td>a2</td>
+      <td> </td>
+      <td>a1</td>
+      <td> </td>
+      <td>a0), B = (b3</td>
+      <td> </td>
+      <td>b2</td>
+      <td> </td>
+      <td>b1</td>
+      <td> </td>
+      <td>b0), ai,bi 1 bit</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Output: C = (c3</td>
+      <td> </td>
+      <td>c2</td>
+      <td> </td>
+      <td>c1</td>
+      <td> </td>
+      <td>c0)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>t1 = a0 XOR a3</p>
+
+<p>t2 = a2 XOR a3</p>
+
+<p>c3 = (a3 AND b0) XOR (a2 AND b1) XOR (a1 AND b2) XOR (t1 AND b3)</p>
+
+<p>c2 = (a2 AND b0) XOR (a1 AND b1) XOR (t1 AND b2) XOR (t2 AND b3)</p>
+
+<p>c1 = (a1 AND b0) XOR (t1 AND b1) XOR (t2 AND b2) XOR ((a1 XOR a2) AND b3)</p>
+
+<p>c0 = (a0 AND b0) XOR (a3 AND b1) XOR (a2 AND b2) XOR (a1 AND b3)</p>
+
+<h2 id="squaring-on-gf24-c--sqr4a">Squaring on GF(2^4) (C = sqr4(A))</h2>
+<p>Input: A = (a3||a2||a1||a0),  ai 1 bit</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Output: C = (c3</td>
+      <td> </td>
+      <td>c2</td>
+      <td> </td>
+      <td>c1</td>
+      <td> </td>
+      <td>c0)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>c3 = a3</p>
+
+<p>c2 = a3 XOR a1</p>
+
+<p>c1 = a2</p>
+
+<p>c0 = a0 XOR a2</p>
+
+<h2 id="inversion-on-gf24-c--inv4a">Inversion on GF(2^4) (C = inv4(A))</h2>
+<p>Input: A = (a3||a2||a1||a0),  ai 1 bit</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Output: C = (c3</td>
+      <td> </td>
+      <td>c2</td>
+      <td> </td>
+      <td>c1</td>
+      <td> </td>
+      <td>c0)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>t1 = a1 XOR a2 XOR a3 XOR (a1 AND a2 AND a3)</p>
+
+<p>c3 = t1 XOR (a0 AND a3) XOR (a1 AND a3) XOR (a2 AND a3)</p>
+
+<p>c2 = (a0 AND a1) XOR a2 XOR (a0 AND a2) XOR a3 XOR (a0 AND a3) AND (a0 AND a2 AND a3)</p>
+
+<p>c1 = (a0 AND a1) XOR (a0 AND a2) XOR (a1 AND a2) XOR a3 XOR (a1 AND a3) XOR (a0 AND a1 AND a3)</p>
+
+<p>c0 = t1 XOR a0 XOR (a0 AND a2) XOR (a1 AND a2) XOR (a0 AND a1 AND a2)</p>
+
+<h1 id="operations-on-gf28">Operations on GF(2^8)</h1>
+<p>Constructing GF(2^8) on GF(2^4)</p>
+
+<p>Polinomial defining GF(2^8) over GF(2^4):</p>
+
+<p>p(y) = y^2 + p1 * y + p0</p>
+
+<h2 id="multiplication-on-gf28-mul8">Multiplication on GF(2^8) (mul8)</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Input: A = (a1</td>
+      <td> </td>
+      <td>a0), B = (b1</td>
+      <td> </td>
+      <td>b0), ai,bi 4 bit</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Output: C = (c1</td>
+      <td> </td>
+      <td>c0)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>t = mul4(a1, b1)</p>
+
+<p>c1 = mul4(a1,b0) XOR mul4(a0,b1) XOR mul4(t,p1)</p>
+
+<p>c0 = mul4(a0,b0) XOR mul4(t,p0)</p>
+
+<h2 id="squaring-on-gf28-sqr8">Squaring on GF(2^8) (sqr8)</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Input: A = (a1</td>
+      <td> </td>
+      <td>a0), ai 4 bit</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Output: C = (c1</td>
+      <td> </td>
+      <td>c0)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>t = sqr4(a1)</p>
+
+<p>c1 = mul4(t,p1)</p>
+
+<p>c0 = sqr4(a0) XOR mul4(t,p0)</p>
+
+<h2 id="inversion-on-gf28-inv8">Inversion on GF(2^8) (inv8)</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Input: A = (a1</td>
+      <td> </td>
+      <td>a0), ai 4 bit</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Output: C = (c1</td>
+      <td> </td>
+      <td>c0)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>t1 = mul4(sqr4(a1), p0) XOR mul4(mul4(a1,a0), p1) XOR sqr4(a0)</p>
+
+<p>t2 = inv4(t1)</p>
+
+<p>t3 = mul4(a1,p1) XOR a0</p>
+
+<p>c1 = mul4(t2,a1)</p>
+
+<p>c0 = mul4(t3,t2)</p>]]></content><author><name>Cevat Manap</name><email>cevatmanap@gmail.com</email></author><summary type="html"><![CDATA[GF(2^m) Inversion]]></summary></entry><entry><title type="html">Block Cipher Modes</title><link href="http://localhost:4000/2025/03/25/blockmodes.html" rel="alternate" type="text/html" title="Block Cipher Modes" /><published>2025-03-25T00:00:00+03:00</published><updated>2025-03-25T00:00:00+03:00</updated><id>http://localhost:4000/2025/03/25/blockmodes</id><content type="html" xml:base="http://localhost:4000/2025/03/25/blockmodes.html"><![CDATA[<p>For a general analysis of various Block Cipher Modes checkout the excellent report by Rogaway <a href="https://www.cryptrec.go.jp/exreport/cryptrec-ex-2012-2010r1.pdf">Evaluation of some Blockcipher Modes of Operation</a></p>
+
+<h1 id="ecb-mode">ECB Mode</h1>
+
+<div style="text-align: center">
+<embed src="/svg/blockmodes/ecb.tikz.svg" type="image/svg+xml" />
+
+</div>
+
+<p>Defined In: <em>Common Knowledge????</em></p>
+
+<p>Not used at all!!</p>
+
+<h1 id="cbc-mode">CBC Mode</h1>
+
+<p>Defined In: <a href="http://csrc.nist.gov">NIST SP-800-38A</a></p>
+<div style="text-align: center">
+
+<embed src="/svg/blockmodes/cbc.tikz.svg" type="image/svg+xml" />
+
+</div>
+
+<h1 id="cfb-mode">CFB Mode</h1>
+
+<p>Defined In: <a href="http://csrc.nist.gov">NIST SP-800-38A</a></p>
+<div style="text-align: center">
+
+<embed src="/svg/blockmodes/cfb.tikz.svg" type="image/svg+xml" />
+
+</div>]]></content><author><name>Cevat Manap</name><email>cevatmanap@gmail.com</email></author><summary type="html"><![CDATA[For a general analysis of various Block Cipher Modes checkout the excellent report by Rogaway Evaluation of some Blockcipher Modes of Operation]]></summary></entry><entry><title type="html">Notes on Even-Mansour Scheme</title><link href="http://localhost:4000/crypto/misc/2024/04/02/even-mansour.html" rel="alternate" type="text/html" title="Notes on Even-Mansour Scheme" /><published>2024-04-02T00:00:00+03:00</published><updated>2024-04-02T00:00:00+03:00</updated><id>http://localhost:4000/crypto/misc/2024/04/02/even-mansour</id><content type="html" xml:base="http://localhost:4000/crypto/misc/2024/04/02/even-mansour.html"><![CDATA[<p><a href=".">PDF version</a> to be written.</p>
+<h2 id="even-mansour-scheme">Even Mansour Scheme</h2>
+
+<p><strong>F</strong>: randomly selected keyless permutation</p>
+
+<blockquote>
+  <p>only way to access F is through a black box</p>
+</blockquote>
+
+<p><img src="." alt="basic EM scheme image" /></p>
+
+<p><strong>Security Goal</strong>:</p>
+<ul>
+  <li><strong>D</strong>: Data (X,W) pairs (plain/ciphertext pairs)</li>
+  <li><strong>T</strong>: Time (Y,Z) pairs (computation)</li>
+  <li><strong>D x T &gt; 2^n</strong> for any attack</li>
+</ul>
+
+<h2 id="daemen-attack-chosen-ciphertext">Daemen Attack (Chosen Ciphertext)</h2>
+<p><a href=".">link to paper</a>
+<strong>Differential Crpytanalysis</strong> Since <strong>F</strong> is random, 1 plain/ciphertext pair with dY-&gt;dZ expected on average.
+(Y1,Z1), (Y2,Z2), Y2 = Y1 + dY, Z2 = Z1 + dZ</p>
+
+<p>Attack Steps:</p>
+<ol>
+  <li>Choose <em>t</em> different input pairs with input difference dY. (Yi,Yi+dY)</li>
+  <li>Compute (Zi,Zi+dZi) for each input pair.</li>
+  <li>Make a list of (dZi, Yi) pairs. (sort the list)
+4.1. Pick random input X1. X2 = X1 + dY.
+4.2. Compute W1,W2 corresponding to X1,X2. dW = W1+W2.
+4.3. Search the list for a match between dW and dZi.
+4.3.1. When a match is found at index i, either
+    X1+K1 = Yi
+    F(Yi)+K2 = W1
+    or
+    X1+K1 = Yi+dY
+    F(Yi)+K2 = W1+dZi</li>
+</ol>
+
+<p>Repeating step 4 2^n/t times reveals th correct key.
+Data Complexity: 2^n/t
+Time Complexity: t
+D+T : 2^n/t + t   ( for t~2^(n/2) D+T ~ 2x2^(n/2))</p>
+
+<h2 id="biryukov-wagner-attack-known-plaintext">Biryukov-Wagner Attack (Known Plaintext)</h2>
+<p><a href=".">link to paper</a>
+<strong>Slide with a Twist</strong> Attack uses pairs with X1 = Y2 (i.e. Y1 = X2)
+<img src="." alt="slide attack image" /></p>
+
+<p>X1 = Y2 –&gt; W2 = Z2 + K2
+            W2 = F(Y2) + K2
+			W2 = F(X1) + K2</p>
+
+<p>Y1 = X2 –&gt; W1 = Z1 + K2
+            W1 = F(Y1) + K2
+			W1 = F(X2) + K2</p>
+
+<p>K2       = W2 + F(X1) = W1 + F(X2)
+W1+W2+K2 = W1 + F(X1) = W2 + F(X2)</p>
+
+<p>Attack Steps:</p>
+<ol>
+  <li>Collect <em>t</em> encryptions (Xi,Wi) (p/c pairs)</li>
+  <li>Make a list of (F(Xi) + Wi, Xi) pairs.</li>
+  <li>Sort the list. (complexity tlog(t))</li>
+  <li>Locate pairs satisfying F(Xi) + Wi = F(Xj) + Wj.
+4.1. Keys are K2 = F(Xi) + Wj
+           K1 = Xi + Xj</li>
+</ol>
+
+<p>Birthday Paradox says t ~ 2^(n/2) is enough to produce matching (i,j)</p>
+
+<p>Data complexity: t ~ 2^(n/2)
+Time complexity: t ~ 2^(n/2)</p>
+
+<h2 id="dunkelman-keller-shamir-attack-known-plaintext">Dunkelman-Keller-Shamir Attack (Known Plaintext)</h2>
+<p><a href=".">link to paper</a>
+<strong>Slidex??</strong> 
+Assume we have X1 = Y2 + c , X2 = Y1 + c for some c</p>
+
+<p>X1 = Y2 + c –&gt; W2 = Z2 + K2
+                W2 = F(Y2) + K2 
+				W2 = F(X1+c) + K2
+X2 = Y1 + c –&gt; W1 = Z1 + K1
+                W1 = F(Y1) + K2 
+				W1 = F(X2+c) + K2
+K2           = W1 + F(X2+c) = W2 + F(X1+c)
+K2 + W1 + W2 = W2 + F(X2+c) = W1 + F(X1+c)</p>
+
+<p>Attack Steps:</p>
+<ol>
+  <li>Collect <em>t</em> encryptions (Xi,Wi) (p/c pairs)</li>
+  <li>Choose <em>m</em> different c values.</li>
+  <li>For each c value make a list (L_c) of pairs (Wi + F(Xi+c), Xi)
+3.1. Sort the list. (complexity tlog(t))
+3.2. Locate pairs satisfying Wi + F(Xi + c) = Wj + F(Xj + c).
+3.3. Keys are K2 = Wi + F(Xj + c)
+           K1 = Xi + Xj + c</li>
+</ol>
+
+<p>How many c do we need? (m=?)</p>
+<ul>
+  <li>For each c we check t^2 i,j pairs: sorting the list reduces actual work done, but in theory we considered t^2 i,j pairs.</li>
+  <li>Each check has a probability of 2^(-n) of satisfying step 3.2.</li>
+  <li>To get 1 pair that satisfies 3.2 we need to do 2^n checks (on average).</li>
+  <li>Total number of checks: mt^2. mt^2 = 2^n –&gt; m = 2^n / (t^2)</li>
+</ul>
+
+<p>Data complexity: m ~ 2^n/(t^2)
+Time complexity: mt ~ 2^(n)/t</p>]]></content><author><name>Cevat Manap</name><email>cevatmanap@gmail.com</email></author><category term="crypto/misc" /><summary type="html"><![CDATA[PDF version to be written. Even Mansour Scheme]]></summary></entry></feed>
