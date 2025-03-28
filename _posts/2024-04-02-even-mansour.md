@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "Notes on Even-Mansour Scheme"
-categories: crypto/misc
 ---
 [PDF version](.) to be written.
 ## Even Mansour Scheme 
